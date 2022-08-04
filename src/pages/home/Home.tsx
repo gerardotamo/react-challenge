@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Grid, Box } from "@mui/material";
 import Dashboard from '../../components/dashboard/Dashboard';
+import ListPost from '../../components/listPosts/ListaPost';
 import User from '../../interface/user';
 import Post from '../../interface/post';
 import Photos from '../../interface/photos';
 import * as postService from '../../services/posts.service';
+import { getPhotos } from '../../services/photos.service';
+
 interface Props {
   underline: boolean
 }
@@ -42,8 +45,15 @@ const Home = ({ underline }: Props) => {
       setHelpError(false);
       setPosts(data);
     }
-
+    const getPhotosForUsers = async () => {
+      setLoading(true)
+      const data = await getPhotos();
+      setLoading(false);
+      localStorage.setItem('photos', JSON.stringify(data))
+      setPhotos(data);
+    }
     getPostsForIdUser();
+    getPhotosForUsers();
   }, [user])
 
 
@@ -58,7 +68,7 @@ const Home = ({ underline }: Props) => {
       <Grid container style={{}} sx={{}}>
         <Dashboard underline={underline} user={user} />
         <Grid item xs={0.3} />
-        <Grid item xs={9.2} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Grid item xs={9.2} style={{}}>
           {
             loading ?
               <h3>
@@ -70,7 +80,8 @@ const Home = ({ underline }: Props) => {
                   THERE WAS AN ERROR LOADING THE DATA
                 </h3>
                 :
-                "ERROR"
+                posts && photos &&
+                <ListPost posts={posts} photos={photos} />
           }
         </Grid>
       </Grid>
