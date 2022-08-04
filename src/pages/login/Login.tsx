@@ -11,6 +11,17 @@ import User from '../../interface/user';
 const Login = () => {
   const navigate = useNavigate();
 
+  const user: User | undefined = (localStorage.getItem('user') === null ?
+    undefined : JSON.parse(localStorage.getItem("user") || "")
+  );
+
+  useEffect(() => {
+    if (user !== undefined) {
+      return navigate("/", { replace: true });
+    }
+    return () => { }
+  }, [])
+
   useEffect(() => {
     const getAllDataUsers = async () => {
       const data = await getAllUsers();
