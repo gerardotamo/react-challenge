@@ -14,11 +14,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/'>
-            <Route index element={<Home/>} />
+            <Route index element={<Home underline={true} />} />
             <Route path='login' element={<Login />} />
             <Route path=':postId' element={<PostDetail />} />
             <Route path='/allposts'>
-              <Route index element={<Home/>} />
+              <Route index element={<Home underline={false} />} />
             </Route>
           </Route>
         </Routes>

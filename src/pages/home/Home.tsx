@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-const Home = () => {
+import { Grid, Box } from "@mui/material";
+import Dashboard from '../../components/dashboard/Dashboard';
+import User from '../../interface/user';
+
+interface Props {
+  underline: boolean
+}
+
+const Home = ({ underline }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,11 +22,19 @@ const Home = () => {
     return () => { }
   }, [])
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState<User>()
 
 
   return (
-    <div>Home</div>
+    <Box sx={{ display: 'block' }}>
+      <Grid container style={{}} sx={{}}>
+        <Dashboard underline={underline} user={user} />
+        <Grid item xs={0.3} />
+        <Grid item xs={9.2} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 
