@@ -1,8 +1,11 @@
 import React from 'react'
+import { View } from './loginStyled';
 
 const Login = () => {
   return (
-    <div>Login</div>
+    <View>
+      LOGIN
+    </View>
   )
 }
 
