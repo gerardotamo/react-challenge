@@ -1,11 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { View } from './loginStyled';
 import { TextField, CircularProgress, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { AccountCircle } from '@mui/icons-material';
+import { getAllUsers } from '../../services/users.service';
+import { login } from '../../services/auth.service';
+import User from '../../interface/user';
 
 const Login = () => {
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const getAllDataUsers = async () => {
+      const data = await getAllUsers();
+      if (data !== undefined) {
+        setUsers(data);
+      }
+    }
+
+    getAllDataUsers()
+  })
+
+  const [users, setUsers] = useState<User[]>();
   const [email, setEmail] = useState<string>('');
   const [helperText, setHelperText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,8 +33,30 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    
+    if (!isValidEmail(email)) {
+      setHelperText('Email is invalid');
+      setError(true);
+      return;
+    }
+    setError(false);
+    setHelperText('');
+    let resp;
+    if (users === undefined) {
+      const data = await getAllUsers();
+      resp = await login(email, data);
+    } else {
+      resp = await login(email, users);
+    }
+    setLoading(false);
+    if (resp === undefined) {
+      setHelperText('Email is not register');
+      setError(true);
+      return;
+    }
+    navigate("/", { replace: true })
   }
+
+
 
   function isValidEmail(email: string): boolean {
     return /\S+@\S+\.\S+/.test(email);
