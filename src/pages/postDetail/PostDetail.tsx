@@ -1,20 +1,39 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import User from '../../interface/user';
+import Post from '../../interface/post';
+import { getCommentsForPost } from '../../services/comments.service';
 const PostDetail = () => {
+    const postID = useParams();
     const navigate = useNavigate();
+    const [user, setUser] = useState<User | undefined>(localStorage.getItem('user') === null ?
+        undefined : JSON.parse(localStorage.getItem("user") || "")
+    );
     useEffect(() => {
-        const user = window.localStorage.getItem("user");
-        console.log(user)
-        if (user === null) {
+        if (user === undefined) {
             return navigate("/login", { replace: true });
-        } else {
-            setUser(JSON.parse(window.localStorage.getItem("user") || '{}'))
         }
         return () => { }
     }, [])
 
-    const [user, setUser] = useState();
+    useEffect(() => {
+        const getComments = async () => {
+            setLoading(true)
+            let resp = await getCommentsForPost(postID.postId?.toString())
+            setLoading(false)
+            if (resp === undefined) {
+                setHelpError(true);
+                return;
+            }
+            setComments(resp)
+        }
+        getComments();
+    }, [])
+
+    const [comments, setComments] = useState<Comment[]>();
+
+    const [loading, setLoading] = useState(false)
+    const [helpError, setHelpError] = useState(false)
 
     return (
         <div>PostDetail</div>
