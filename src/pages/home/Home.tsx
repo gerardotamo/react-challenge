@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Box } from "@mui/material";
 import Dashboard from '../../components/dashboard/Dashboard';
 import User from '../../interface/user';
-import Post from '../../interface/post'
+import Post from '../../interface/post';
+import Photos from '../../interface/photos';
 
 interface Props {
   underline: boolean
@@ -25,6 +26,7 @@ const Home = ({ underline }: Props) => {
 
   const [user, setUser] = useState<User>()
   const [posts, setPosts] = useState<Post[]>();
+  const [photos, setPhotos] = useState<Photos[]>();
 
   return (
     <Box sx={{ display: 'block' }}>
