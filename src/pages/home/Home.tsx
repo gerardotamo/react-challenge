@@ -8,7 +8,7 @@ const Home = () => {
     console.log(user)
     if (user === null) {
       return navigate("/login", { replace: true });
-    }else{
+    } else {
       setUser(JSON.parse(window.localStorage.getItem("user") || '{}'))
     }
     return () => { }
