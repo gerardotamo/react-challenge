@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import { Grid, Box, CardMedia, Avatar } from "@mui/material";
 import { Content, PersonalInfo, PostDetailStyled, UserDetail, UserInfo } from './styled'
+import ListComment from '../../components/ListComment/ListComment';
 import Dashboard from '../../components/dashboard/Dashboard';
 import User from '../../interface/user';
 import Post from '../../interface/post';
+import Comment from '../../interface/comment';
 import { getCommentsForPost } from '../../services/comments.service';
 const PostDetail = () => {
     const postID = useParams();
@@ -34,8 +36,8 @@ const PostDetail = () => {
     }, [])
 
     const [comments, setComments] = useState<Comment[]>();
-    const auxPost: Post = JSON.parse(localStorage.getItem('post') || '{}');
-    const auxPhotos = JSON.parse(localStorage.getItem('photos') || '{}');
+    const post: Post = JSON.parse(localStorage.getItem('post') || '{}');
+    const photos = JSON.parse(localStorage.getItem('photos') || '{}');
 
     const [loading, setLoading] = useState(false)
     const [helpError, setHelpError] = useState(false)
@@ -51,7 +53,7 @@ const PostDetail = () => {
                             <div>
                                 <Content>
                                     <div style={{ color: "#C1B5A0", marginBottom: "10px" }}>
-                                        {auxPost.title}
+                                        {post.title}
                                     </div>
                                     <Grid container >
                                         <Grid item xs={8} style={{ textAlign: 'left', color: '#C1B5A0' }}>
@@ -64,7 +66,7 @@ const PostDetail = () => {
                                                     image="https://picsum.photos/550/120?random=2"
                                                     alt="random"
                                                 />
-                                                <div style={{ margin: "15px" }}>{auxPost.body}</div>
+                                                <div style={{ margin: "15px" }}>{post.body}</div>
                                             </PostDetailStyled>
                                         </Grid>
                                         <Grid xs={0.5} />
@@ -104,8 +106,8 @@ const PostDetail = () => {
                                                     THERE WAS AN ERROR LOADING THE DATA
                                                 </h3>
                                                 :
-                                                comments && auxPhotos !== null &&
-                                                null
+                                                comments && photos !== null &&
+                                                <ListComment photos={photos} comments={comments} />
                                     }
                                 </div>
                             </div>
