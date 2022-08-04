@@ -5,28 +5,53 @@ import Dashboard from '../../components/dashboard/Dashboard';
 import User from '../../interface/user';
 import Post from '../../interface/post';
 import Photos from '../../interface/photos';
-
+import * as postService from '../../services/posts.service';
 interface Props {
   underline: boolean
 }
 
+
 const Home = ({ underline }: Props) => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | undefined>(localStorage.getItem('user') === null ?
+    undefined : JSON.parse(localStorage.getItem("user") || "")
+  );
 
   useEffect(() => {
-    const user = window.localStorage.getItem("user");
-    console.log(user)
-    if (user === null) {
+    if (user === undefined) {
       return navigate("/login", { replace: true });
     } else {
-      setUser(JSON.parse(window.localStorage.getItem("user") || '{}'))
+      //setUser(JSON.parse(auxuser || '{}'))
     }
     return () => { }
   }, [])
 
-  const [user, setUser] = useState<User>()
+  useEffect(() => {
+    const getPostsForIdUser = async () => {
+      setLoading(true)
+      let data = undefined;
+      if (user?.id !== undefined) {
+        data = await postService.getPostsForUser((user.id).toString());
+      }
+      setLoading(false);
+      if (data === undefined) {
+        setHelpError(true);
+        return;
+      }
+      localStorage.setItem('posts', JSON.stringify(data))
+      setHelpError(false);
+      setPosts(data);
+    }
+
+    getPostsForIdUser();
+  }, [user])
+
+
   const [posts, setPosts] = useState<Post[]>();
   const [photos, setPhotos] = useState<Photos[]>();
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [helpError, setHelpError] = useState<boolean>(false);
 
   return (
     <Box sx={{ display: 'block' }}>
@@ -34,7 +59,19 @@ const Home = ({ underline }: Props) => {
         <Dashboard underline={underline} user={user} />
         <Grid item xs={0.3} />
         <Grid item xs={9.2} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
+          {
+            loading ?
+              <h3>
+                LOADING...
+              </h3>
+              :
+              helpError ?
+                <h3 style={{ color: 'red' }}>
+                  THERE WAS AN ERROR LOADING THE DATA
+                </h3>
+                :
+                "ERROR"
+          }
         </Grid>
       </Grid>
     </Box>

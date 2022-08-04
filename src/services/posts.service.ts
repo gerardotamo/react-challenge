@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "./constants/api";
 
-export async function getPostsForUser(id: string) {
+export async function getPostsForUser(id: string | undefined) {
     try {
         const resp = await axios.get(`${API_URL}posts?userId=${id}`);
         return resp.data;
