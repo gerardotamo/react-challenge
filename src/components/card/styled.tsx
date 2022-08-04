@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CardPost = styled.div`
+const CardP = styled.div`
     display: flex;
     width: 50%;
     margin: 20px;
@@ -16,4 +16,14 @@ const CardPost = styled.div`
     
 `;
 
-export { CardPost };
+const CardC = styled.div`
+    display: flex;
+    width: 50%;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 8px gray;
+    flex-direction: column;
+`;
+
+export { CardP, CardC };

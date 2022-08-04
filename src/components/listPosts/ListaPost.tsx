@@ -16,9 +16,7 @@ const ListPost = ({ posts, photos }: Props) => {
             {
                 posts.map((post: Post, index: number) => {
                     return (
-                        <CardPost key={post.id} post={post} imageurl={photos[index].url}
-                            posts={posts} photos={photos}
-                        />
+                        <CardPost key={post.id} post={post} imageurl={photos[index].url} />
                     )
                 })
             }

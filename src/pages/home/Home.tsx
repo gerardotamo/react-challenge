@@ -23,8 +23,6 @@ const Home = ({ underline }: Props) => {
   useEffect(() => {
     if (user === undefined) {
       return navigate("/login", { replace: true });
-    } else {
-      //setUser(JSON.parse(auxuser || '{}'))
     }
     return () => { }
   }, [])

@@ -4,21 +4,19 @@ import { Avatar, Grid } from '@mui/material'
 import {
     useNavigate, Route
 } from "react-router-dom";
-import { CardPost } from './styled'
+import { CardP } from './styled'
 interface Props {
-    posts: Post[],
-    photos: Photos[],
     post: Post,
     imageurl: string,
 }
 
-const Cardcomponent = ({ post, imageurl }: Props) => {
+const CardPost = ({ post, imageurl }: Props) => {
 
     const navigate = useNavigate();
 
     return (
 
-        <CardPost onClick={() => {
+        <CardP onClick={() => {
             localStorage.setItem('post', JSON.stringify(post));
             navigate("/" + post.id, { replace: true });
         }} >
@@ -37,9 +35,9 @@ const Cardcomponent = ({ post, imageurl }: Props) => {
                     <h6>{post.body}</h6>
                 </Grid>
             </Grid>
-        </CardPost>
+        </CardP>
 
     )
 }
 
-export default Cardcomponent;
+export default CardPost;
