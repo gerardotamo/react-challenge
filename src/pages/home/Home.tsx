@@ -43,6 +43,22 @@ const Home = ({ underline }: Props) => {
       setHelpError(false);
       setPosts(data);
     }
+    const getPosts = async () => {
+      setLoading(true)
+      let data = undefined;
+      if (user?.id !== undefined) {
+        data = await postService.getAllPost();
+      }
+      setLoading(false);
+      if (data === undefined) {
+        setHelpError(true);
+        return;
+      }
+      localStorage.setItem('posts', JSON.stringify(data))
+      setHelpError(false);
+      setPosts(data);
+    }
+
     const getPhotosForUsers = async () => {
       setLoading(true)
       const data = await getPhotos();
@@ -50,7 +66,11 @@ const Home = ({ underline }: Props) => {
       localStorage.setItem('photos', JSON.stringify(data))
       setPhotos(data);
     }
-    getPostsForIdUser();
+    if (underline) {
+      getPostsForIdUser();
+    } else {
+      getPosts();
+    }
     getPhotosForUsers();
   }, [user])
 
